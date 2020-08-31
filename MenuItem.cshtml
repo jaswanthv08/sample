@@ -1,0 +1,95 @@
+﻿@model IEnumerable<sample.Models.MenuItem>
+@{
+    ViewBag.Title = "MenuItem";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Menu items</h2>
+<style>
+    table {
+        border-collapse:collapse;
+    }
+    tr{border:1px ridge lightgray;
+       border-left:none;
+       border-right:none;
+    }
+    
+        
+    th {padding-top:20px;
+        padding-right:100px;
+        padding-bottom:20px;
+    }
+        th:first-child {
+            padding-left:20px;
+        }
+    tr:first-child {
+        border-top:none;
+    }
+        td:first-child {
+            padding-left: 20px;
+        }
+        tr:last-child{border-bottom:none;}
+
+    td {padding-bottom:20px;
+        padding-right: 30px;
+        padding-top:20px;
+    }
+        
+    input[type="checkbox"] {
+        pointer-events: none;
+    }
+</style>
+
+@if (ViewBag.isAdmin == true)
+{
+    @Html.ActionLink("Create New", "Create", "MenuItem")
+     <hr size="1" color:"gray">
+     <table>
+         <tr>
+             <th>@Html.DisplayNameFor(m => m.Name)</th>
+             <th>@Html.DisplayNameFor(m => m.Price)</th>
+             <th>@Html.DisplayNameFor(m => m.Active)</th>
+             <th>@Html.DisplayNameFor(m => m.DateOfLaunch)</th>
+             <th>@Html.DisplayNameFor(m => m.Category.Name)</th>
+             <th>@Html.DisplayNameFor(m => m.FreeDelivery)</th>
+             <th>Action</th>
+         </tr>
+         @foreach (var element in Model)
+         {
+             <tr>
+                 <td>@element.Name</td>
+                 <td>@element.Price</td>
+                 <td>@Html.CheckBoxFor(Model => element.Active)</td>
+                 <td>@element.DateOfLaunch.ToString("yyyy-MM-dd") </td>
+                 <td>@element.Category.Name</td>
+                 <td>@Html.CheckBoxFor(Model => element.FreeDelivery)</td>
+                 <td>@Html.ActionLink("Edit", "Edit", "MenuItem", new { id = element.Id }, null)</td>
+             </tr>
+             
+         }
+     </table>
+}
+@if (ViewBag.isAdmin == false)
+{
+    <hr  size = "1"  color:"gray" />
+    <table>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.Name)</th>
+            <th>@Html.DisplayNameFor(m => m.Price)</th>
+            <th>@Html.DisplayNameFor(m => m.FreeDelivery)</th>
+            <th>@Html.DisplayNameFor(m => m.Category.Name)</th>
+            <th>Action</th>
+        </tr>
+        @foreach (var element in Model)
+        {
+            <tr>
+                
+                <td>@element.Name</td>
+                <td>@element.Price</td>
+                <td>@Html.CheckBoxFor(Model => element.FreeDelivery)</td>
+                <td>@element.Category.Name</td>
+                <td>@Html.ActionLink("AddToCart", "AddToCart", "Cart",new { id=element.Id},null)</td>
+            </tr>
+        }
+    </table>
+}
